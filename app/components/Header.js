@@ -3,10 +3,18 @@ import { Link } from 'react-router-dom'
 import HeaderLoggedOut from './HeaderLoggedOut'
 import HeaderLoggedIn from './HeaderLoggedIn'
 import StateContext from '../StateContext'
+import PropTypes from 'prop-types'
 
 // props being used to accept logged in status from main.js
-function Header () {
+function Header (props) {
     const appState = useContext(StateContext)
+    {
+        /* conditionally loading components based on login status (ternary operator) */
+    }
+    {
+        /* passing the loggedIn state as a prop to the sub components */
+    }
+    const headerContent = appState.loggedIn ? <HeaderLoggedIn /> : <HeaderLoggedOut />
 
     return (
         <header className='header-bar bg-primary mb-3'>
@@ -16,12 +24,15 @@ function Header () {
                         ComplexApp
                     </Link>
                 </h4>
-                {/* conditionally loading components based on login status (ternary operator) */}
-                {/* passing the loggedIn state as a prop to the sub components */}
-                {appState.loggedIn ? <HeaderLoggedIn /> : <HeaderLoggedOut />}
+
+                {!props.staticEmpty ? headerContent : ''}
             </div>
         </header>
     )
+}
+
+Header.propTypes = {
+    staticEmpty : PropTypes.bool,
 }
 
 export default Header
