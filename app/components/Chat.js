@@ -4,9 +4,9 @@ import DispatchContext from '../DispatchContext'
 import { useImmer } from 'use-immer'
 import { Link } from 'react-router-dom'
 import io from 'socket.io-client'
-const socket = io('http://localhost:8080') // this establishes an ongoing connection with browser and server
 
 function Chat () {
+    const socket = useRef(null)
     const appState = useContext(StateContext)
     const appDispatch = useContext(DispatchContext)
     const chatField = useRef(null) // unlike state, ref can be directly mutated
@@ -32,12 +32,18 @@ function Chat () {
 
     // get messages from server
     // run the function whenever this happens, adding the message to the state item chatMessages
+    // we are also opening and closing socket when this component mounts/unmounts
     useEffect(() => {
-        socket.on('chatFromServer', (message) => {
+        socket.current = io('http://localhost:8080') // this establishes an ongoing connection with browser and server
+
+        socket.current.on('chatFromServer', (message) => {
             setState((draft) => {
                 draft.chatMessages.push(message)
             })
         })
+
+        // cleanup function
+        return () => socket.current.disconnect()
     }, [])
 
     // anytime there is a new chat message, scroll to bottom of window
@@ -68,7 +74,7 @@ function Chat () {
         // for two way communication, axios doesn't work, so we use socket.io
         // chatFromBrowser is a server side setup
         // the server needs a token to be able to trust us
-        socket.emit('chatFromBrowser', { message: state.fieldValue, token: appState.user.token })
+        socket.current.emit('chatFromBrowser', { message: state.fieldValue, token: appState.user.token })
 
         setState((draft) => {
             // add message to state collection of messages
