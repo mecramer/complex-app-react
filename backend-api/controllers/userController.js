@@ -4,7 +4,7 @@ const Follow = require('../models/Follow')
 const jwt = require('jsonwebtoken')
 
 // how long a token lasts before expiring
-const tokenLasts = '3h'
+const tokenLasts = '2h'
 
 exports.apiGetPostsByUsername = async function (req, res) {
     try {
