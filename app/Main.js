@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, Suspense } from 'react'
 import { useImmerReducer } from 'use-immer'
 import ReactDOM from 'react-dom'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
@@ -16,14 +16,16 @@ import Home from './components/Home'
 import Footer from './components/Footer'
 import About from './components/About'
 import Terms from './components/Terms'
-import CreatePost from './components/CreatePost'
-import ViewSinglePost from './components/ViewSinglePost'
+const CreatePost = React.lazy(() => import('./components/CreatePost')) // a variable for lazy loading
+// lazy loading should probably only be done for larger components
+const ViewSinglePost = React.lazy(() => import('./components/ViewSinglePost'))
 import FlashMessages from './components/FlashMessages'
 import Profile from './components/Profile'
 import EditPost from './components/EditPost'
 import NotFound from './components/NotFound'
-import Search from './components/Search'
-import Chat from './components/Chat'
+const Search = React.lazy(() => import('./components/Search'))
+const Chat = React.lazy(() => import('./components/Chat'))
+import LoadingDotsIcon from './components/LoadingDotsIcon'
 
 function Main () {
     const initialState = {
@@ -148,38 +150,49 @@ function Main () {
                     {/* state. because the state is located in same component, a sub component would use dispatch */}
                     <FlashMessages messages={state.flashMessages} />
                     <Header />
-                    <Switch>
-                        <Route path='/profile/:username'>
-                            <Profile />
-                        </Route>
-                        {/* Set home component based on whether user is logged in */}
-                        <Route path='/' exact>
-                            {state.loggedIn ? <Home /> : <HomeGuest />}
-                        </Route>
-                        {/* :id is like a parameter or variable */}
-                        <Route path='/post/:id' exact>
-                            <ViewSinglePost />
-                        </Route>
-                        <Route path='/post/:id/edit' exact>
-                            <EditPost />
-                        </Route>
-                        <Route path='/create-post'>
-                            <CreatePost />
-                        </Route>
-                        <Route path='/about-us'>
-                            <About />
-                        </Route>
-                        <Route path='/terms'>
-                            <Terms />
-                        </Route>
-                        <Route>
-                            <NotFound />
-                        </Route>
-                    </Switch>
+                    {/* Suspense will load a fallback if a component is being loaded for first time  */}
+                    <Suspense fallback={<LoadingDotsIcon />}>
+                        <Switch>
+                            <Route path='/profile/:username'>
+                                <Profile />
+                            </Route>
+                            {/* Set home component based on whether user is logged in */}
+                            <Route path='/' exact>
+                                {state.loggedIn ? <Home /> : <HomeGuest />}
+                            </Route>
+                            {/* :id is like a parameter or variable */}
+                            <Route path='/post/:id' exact>
+                                <ViewSinglePost />
+                            </Route>
+                            <Route path='/post/:id/edit' exact>
+                                <EditPost />
+                            </Route>
+                            <Route path='/create-post'>
+                                <CreatePost />
+                            </Route>
+                            <Route path='/about-us'>
+                                <About />
+                            </Route>
+                            <Route path='/terms'>
+                                <Terms />
+                            </Route>
+                            <Route>
+                                <NotFound />
+                            </Route>
+                        </Switch>
+                    </Suspense>
+                    {/*
+                    CSSTransition adds classes to its direct child, so we can't put Suspense right under it.
+                    In this case we pulled the highest level div out of Search and added it here.
+                    */}
                     <CSSTransition timeout={330} in={state.isSearchOpen} classNames='search-overlay' unmountOnExit>
-                        <Search />
+                        <div className='search-overlay'>
+                            <Suspense fallback=''>
+                                <Search />
+                            </Suspense>
+                        </div>
                     </CSSTransition>
-                    <Chat />
+                    <Suspense fallback=''>{state.loggedIn && <Chat />}</Suspense>
                     <Footer />
                 </BrowserRouter>
             </DispatchContext.Provider>
