@@ -1,4 +1,6 @@
 *.env
 package-lock.json
+app/index-template.html
+app/index.html
 node_modules/
 dist/
