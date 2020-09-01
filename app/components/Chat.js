@@ -34,7 +34,7 @@ function Chat () {
     // run the function whenever this happens, adding the message to the state item chatMessages
     // we are also opening and closing socket when this component mounts/unmounts
     useEffect(() => {
-        socket.current = io('http://localhost:8080') // this establishes an ongoing connection with browser and server
+        socket.current = io(process.env.BACKENDURL || 'https://backendreactapi.herokuapp.com') // this establishes an ongoing connection with browser and server
 
         socket.current.on('chatFromServer', (message) => {
             setState((draft) => {
