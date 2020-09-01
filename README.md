@@ -5,21 +5,22 @@
 * React
 * React Router
 * React Context - passing data around, StateContext.js and DispatchContext.js
-* Mongo DB
-* Heroku
-* Netlify
-* Express 
+* Mongo DB - to store user information and content
+* Heroku - to host the back end of the app
+* Netlify - to host the front end of the app
+* Node.js - for back end functionality
+* Express - for back end app
 
 ## React Packages
 * React Tooltip
-* Immer
-* Axios
+* Immer - for state management
+* Axios - to communicate with MongoDB database
 * React Transition Group - to have transition effects on React components
 * Prop Types
-* Socket .io
+* Socket .io - for chatting features
 * Page Not Found component
 
-This application uses two repos. One for the front end and another for the backend. Both repos need to be started to view the site locally. The database is located at localhost:8080 and the web interface at localhost:3000.
+This application uses two repos. One for the front end and another for the backend. Both repos need to be started to view the site locally. The database is located at localhost:8080 and the web interface at localhost:3000. This repo represents the front end portion.
 
 Notes:
 The correct install instruction for io is 'npm install socket.io-client --save'
