@@ -1,37 +1,25 @@
 # complex-app-react
- React app with chat, messages, user accounts
+ React app with chat, messages, user accounts. The app can be seen in production at https://angry-khorana-f03a9d.netlify.app/. The app allows users to have an account, post messages, follow and be followed by other users and a chat feature to talk to other logged in users.
 
- test accounts using MongoDB 
+## Tools used
+* React
+* React Router
+* React Context - passing data around, StateContext.js and DispatchContext.js
+* Mongo DB
+* Heroku
+* Netlify
+* Express 
 
-React
-React Router
-Mongo DB
+## React Packages
+* React Tooltip
+* Immer
+* Axios
+* React Transition Group - to have transition effects on React components
+* Prop Types
+* Socket .io
+* Page Not Found component
 
-backendAPi folder needed to connect to MongoDB
-to start mongo
-go to backendAPI folder
-run nmp install first time
-npm run start to start up the DB
-to confirm DB is running, visit localhost:8080
-
-test user account for project is 
-un: mark, email: mark@test.com pw: qwerty123456
-un: jen, email: jen@test.com pw: qwerty123456
-un: kylie, email: kylie@test.com pw: qwerty123456
-
-Context - passing data around
-create StateContext.js and DispatchContext.js files in top folder
-They could be in one, but its better to use two, state to share current state and dispatch to change current state
-These two context providers wrap around all the other components in Main.js
-
-Has a Page Not Found component
-
-Packages
-React Tooltip
-Immer
-React Transition Group - to have transition effects on React components
-Prop Types
-Socket.io
+This application uses two repos. One for the front end and another for the backend. Both repos need to be started to view the site locally. The database is located at localhost:8080 and the web interface at localhost:3000.
 
 Notes:
 The correct install instruction for io is 'npm install socket.io-client --save'
